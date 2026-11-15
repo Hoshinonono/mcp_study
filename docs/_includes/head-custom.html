@@ -1,0 +1,65 @@
+{% comment %}
+  GitHub Pages のテーマ (Primer) が、各ページの <head> の中に読み込むファイル。
+  ここのスクリプトで Mermaid の図と数式 (MathJax) を表示できるようにしている。
+{% endcomment %}
+
+{% comment %} テーマ標準の head-custom.html に入っている読み込み (Google Analytics 未設定なら何も出力されない) {% endcomment %}
+{% include head-custom-google-analytics.html %}
+
+<script type="module">
+  const MATHJAX_URL = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js";
+  const MERMAID_URL = "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
+
+  // ===== 数式 (MathJax) =====
+  // GitHub Pages の Markdown 変換 (kramdown) は $$...$$ を \(...\) か \[...\] に変えて出力する。
+  // GitHub で使える他の書き方も同じ形にそろえてから、MathJax に描画させる。
+
+  // ```math のコードブロック (<pre><code class="language-math">) -> \[...\]
+  for (const code of document.querySelectorAll(".language-math")) {
+    const block = document.createElement("div");
+    block.textContent = "\\[" + code.textContent + "\\]";
+    (code.closest("pre") ?? code).replaceWith(block);
+  }
+
+  // $`...`$ ($<code>...</code>$) -> \(...\)
+  for (const code of document.querySelectorAll("code")) {
+    const before = code.previousSibling;
+    const after = code.nextSibling;
+    if (before?.nodeType === Node.TEXT_NODE && before.data.endsWith("$") &&
+        after?.nodeType === Node.TEXT_NODE && after.data.startsWith("$")) {
+      before.data = before.data.slice(0, -1);
+      after.data = after.data.slice(1);
+      code.replaceWith("\\(" + code.textContent + "\\)");
+    }
+  }
+
+  // 数式がありそうなページでだけ MathJax を読み込む
+  if (/\$|\\\(|\\\[/.test(document.body.textContent)) {
+    window.MathJax = {
+      // $...$ もインライン数式として扱う (標準では \(...\) だけ)
+      tex: { inlineMath: { "[+]": [["$", "$"]] } },
+      // Mermaid の図の中の文字は数式として扱わない
+      options: { ignoreHtmlClass: "mermaid" },
+    };
+    const script = document.createElement("script");
+    script.src = MATHJAX_URL;
+    document.head.append(script);
+  }
+
+  // ===== Mermaid =====
+  // ```mermaid のコードブロック (<pre><code class="language-mermaid">) を図に描き直す。
+  // 図があるページでだけ Mermaid を読み込む
+  const sources = document.querySelectorAll(".language-mermaid");
+  if (sources.length > 0) {
+    const { default: mermaid } = await import(MERMAID_URL);
+    const diagrams = [...sources].map((code) => {
+      const diagram = document.createElement("div");
+      diagram.className = "mermaid";
+      diagram.textContent = code.textContent;
+      (code.closest("pre") ?? code).replaceWith(diagram);
+      return diagram;
+    });
+    mermaid.initialize({ startOnLoad: false });
+    await mermaid.run({ nodes: diagrams });
+  }
+</script>
