@@ -1,0 +1,76 @@
+# docs/ の内容を GitHub Pages (gh-pages ブランチの /docs) へ公開するワークフロー
+#
+#   1. main の docs/ を gh-pages の docs/ へそのままコピーする
+#   2. docs/ 配下の Markdown と PDF の一覧 (docs/index.md) を生成する
+#   3. gh-pages へコミットして push する (その後のビルドと公開は GitHub Pages が自動で行う)
+#
+# 前提: セルフホストランナーの PC に Git と Python 3 が入っていて、PATH が通っていること
+name: Publish docs to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    # docs/ 配下が変更された push でだけ動かす
+    # (一覧の作り方を変えたときも作り直したいので、スクリプトとこのファイル自身も対象に入れている)
+    paths:
+      - docs/**
+      - .github/scripts/generate_index.py
+      - .github/workflows/publish-docs.yml
+  # Actions タブの「Run workflow」ボタンから手動でも実行できるようにする
+  workflow_dispatch:
+
+# gh-pages ブランチへ push するための権限
+permissions:
+  contents: write
+
+# 続けて push したときに gh-pages への push が衝突しないよう、1 つずつ順番に実行する
+concurrency:
+  group: publish-docs
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: [self-hosted, Windows, X64]
+    timeout-minutes: 10
+
+    # run: の中身は PowerShell で実行される。
+    # Windows PowerShell 5.1 でも文字化けせず動くよう、run: の中は半角英数字だけで書くこと
+    steps:
+      - name: main をチェックアウト
+        uses: actions/checkout@v7
+        with:
+          path: main
+
+      - name: gh-pages をチェックアウト
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      # main で削除したファイルが残らないよう、gh-pages 側の docs は毎回作り直す
+      - name: docs フォルダを gh-pages 側へコピー
+        run: |
+          if (Test-Path -LiteralPath gh-pages/docs) { Remove-Item -LiteralPath gh-pages/docs -Recurse -Force }
+          Copy-Item -LiteralPath main/docs -Destination gh-pages/docs -Recurse
+
+      - name: index.md を生成
+        run: python main/.github/scripts/generate_index.py gh-pages/docs
+
+      # 変更が無ければ何もしない。コミットの作成者は github-actions[bot] にする
+      - name: gh-pages へコミットして push
+        working-directory: gh-pages
+        run: |
+          git -c core.safecrlf=false add --all docs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "No changes: gh-pages is already up to date."
+            exit 0
+          }
+
+          git -c core.quotepath=false diff --cached --stat
+          git -c "user.name=github-actions[bot]" -c "user.email=41898282+github-actions[bot]@users.noreply.github.com" commit --quiet -m "Publish docs (main: $env:GITHUB_SHA)"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          git push origin HEAD:gh-pages
