@@ -6,7 +6,7 @@ MCP (Model Context Protocol) サーバーとは、AIが社内データや外部�
 
 Anthropicが2024年11月に発表・公開したオープン標準規格で、現在はLinux Foundation傘下の団体が運営しています。
 
-よく「AI版のUSB-C」と例えられていて、一度作れば、いろいろなAIアプリから使える。<br>
+よく「AI版のUSB-C」と例えられていて、一度作れば、いろいろなAIアプリから使えます。<br>
 Claudeだけでなく、CopilotやCodexなどでも共通の規格で会話ができます。
 
 ## MCPサーバーの利点
