@@ -1,4 +1,4 @@
-# docs フォルダ配下の Markdown と PDF の一覧 (index.md) を生成する python ファイルです
+# docs フォルダ配下の Markdown・PDF・HTML の一覧 (index.md) を生成する python ファイルです
 # フォルダ探索をすることで目次を自動生成します
 #
 # 使い方: python generate_index.py <docsフォルダ>
@@ -16,6 +16,7 @@ INDEX_TITLE = "Documentation Index"
 # 一覧に載せるファイルの拡張子
 MARKDOWN_EXTENSIONS = (".md", ".markdown")
 PDF_EXTENSIONS = (".pdf",)
+HTML_EXTENSIONS = (".html", ".htm")
 
 # フォルダ名かファイル名が以下に一致するものは探索を禁止する (小文字にして比較する)
 BAN_LIST = ("index.md", "readme.md")
@@ -59,7 +60,7 @@ def generate_index(folder, docs_dir, depth=1):
     file_list = ""
     for file in entries:
         suffix = file.suffix.lower()
-        if file.is_file() and suffix in MARKDOWN_EXTENSIONS + PDF_EXTENSIONS:
+        if file.is_file() and suffix in MARKDOWN_EXTENSIONS + PDF_EXTENSIONS + HTML_EXTENSIONS:
             title = escape_markdown(make_title(file))
             mark = " (PDF)" if suffix in PDF_EXTENSIONS else ""
             file_list += f"- [{title}]({make_link(file, docs_dir)}){mark}\n"
