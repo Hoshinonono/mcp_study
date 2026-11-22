@@ -44,8 +44,8 @@ Claude Desktop(Chatタブ)はコネクタ経由だと社内HTTPには届ない�
 
 ### リモートMCP (社内HTTP経由MCP) の接続
 
-<img width="40%" src="../picture/00_chat_tab_internal_mcp_blocked.svg"></img>
-<img width="40%" src="../picture/01_code_tab_internal_mcp_reachable.svg"></img>
+<img width="40%" src="../picture/00_chat_tab_internal_mcp_blocked.svg">
+<img width="40%" src="../picture/01_code_tab_internal_mcp_reachable.svg">
 
 - Chatタブ<br>
   アプリがPCで動いていることは、Chatタブのカスタムコネクタでは助けになりません。接続を張りに行く役目を、Anthropicのクラウド側が受け持つからです。 求められる条件は「インターネット側から、HTTPS標準の443番ポートで入れること」なので、社内からしか見えないサーバーは対象外になります。 図の赤い破線がこの接続で、社内ネットワークの境界で止まります。[claude](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp)
@@ -54,7 +54,7 @@ Claude Desktop(Chatタブ)はコネクタ経由だと社内HTTPには届ない�
 
 ### ローカルMCPの接続
 
-<img width="40%" src="../picture/02_chat_tab_stdio_mcp_reachable.svg"></img>
+<img width="40%" src="../picture/02_chat_tab_stdio_mcp_reachable.svg">
 
 Claude DesktopのChatタブでもローカルMCP(stdio)方式の場合は接続可能です。
 

@@ -14,3 +14,6 @@ Claudeだけでなく、CopilotやCodexなどでも共通の規格で会話が�
 MCP連携した外部システムに関して、生成AIに作業を任せられるだけでなく、外部システム同士の連携がスムーズにできるようになります。<br>
 (例)GitHubの情報をLychee Redmineに流すのを生成AIに任せるなど。
 
+<img width="80%" src="../picture/03_GitHub_LycheeRedmine.png">
+
+
