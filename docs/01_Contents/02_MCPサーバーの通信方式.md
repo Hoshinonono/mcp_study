@@ -2,6 +2,12 @@
 
 主にClaude向けの内容になります。<br>
 
+- [MCPの接続方式](#mcpの接続方式)
+- [MCPサーバーの到達範囲](#mcpサーバーの到達範囲)
+- [Claude Desktopの接続について](#claude-desktopの接続について)
+  - [リモートMCP (社内HTTP経由MCP) の接続](#リモートmcp-社内http経由mcp-の接続)
+  - [ローカルMCPの接続](#ローカルmcpの接続)
+
 ## MCPの接続方式
 
 MCPの仕様で決まっている接続方法は3種類あります。<br>
