@@ -12,6 +12,8 @@ Anthropicが2024年11月に発表・公開したオープン標準規格で、�
 よく「AI版のUSB-C」と例えられていて、一度作れば、いろいろなAIアプリから使えます。<br>
 Claudeだけでなく、CopilotやCodexなどでも共通の規格で会話ができます。
 
+<img width="60%" src="../picture/04_ai_mcp_service_integration.svg">
+
 ## MCPサーバーの利点
 
 MCP連携した外部システムに関して、生成AIに作業を任せられるだけでなく、外部システム同士の連携がスムーズにできるようになります。<br>
