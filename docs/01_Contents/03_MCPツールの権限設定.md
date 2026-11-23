@@ -28,14 +28,14 @@ MCPサーバーからどんなツールが提供されているかは次のよ�
 3. 好きなMCPを選択します。
 4. 「View tools」をクリックします。
 
-<img width="40%" src="../picture/04_VSCode_MCP_tool.png">
+<img width="30%" src="../picture/04_VSCode_MCP_tool.png">
 
 ### Claude Desktopの場合
 
 1. サイドバーの「プラグイン」をクリックします。
 2. 好きなMCPを選択します。
 
-<img width="70%" src="../picture/05_Desktop_MCP_tool.png">
+<img width="60%" src="../picture/05_Desktop_MCP_tool.png">
 
 ## ツールの権限設定
 
@@ -48,8 +48,8 @@ MCPサーバーからどんなツールが提供されているかは次のよ�
 5. 好きなスコープを選択して、「Add Rule」を押すと追加されます。
 6. VS Codeを再起動すると設定が反映されます。
 
-<img width="40%" src="../picture/06_VSCode_permissions.png">
-<img width="40%" src="../picture/07_VSCode_permissions02.png">
+<img width="30%" src="../picture/06_VSCode_permissions.png">
+<img width="30%" src="../picture/07_VSCode_permissions02.png">
 
 ### Claude Desktopの場合
 
